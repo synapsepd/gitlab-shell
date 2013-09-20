@@ -3,7 +3,7 @@ require 'open3'
 require_relative 'gitlab_net'
 
 class GitlabShell
-  attr_accessor :key_id, :repo_name, :git_cmd, :repos_path, :repo_name
+  attr_accessor :key_id, :repo_name, :git_cmd, :repos_path, :repo_name, :args
 
   def initialize
     @key_id = /key-[0-9]+/.match(ARGV.join).to_s
@@ -40,7 +40,7 @@ class GitlabShell
   protected
 
   def parse_cmd
-    args = @origin_cmd.split(' ')
+    @args = @origin_cmd.split(' ')
     @git_cmd = args.shift
     @repo_name = args.shift
   end
@@ -52,7 +52,7 @@ class GitlabShell
   def process_cmd
     repo_full_path = File.join(repos_path, repo_name)
     cmd = "#{@git_cmd} #{repo_full_path}"
-    $logger.info "gitlab-shell: executing git command <#{cmd}> for #{log_username}."
+    $logger.info "gitlab-shell: executing git command <#{cmd}> for #{log_username} #{@args}."
     exec_cmd(cmd)
   end
 

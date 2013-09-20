@@ -15,6 +15,7 @@ class GitlabShell
 
   def exec
     if @origin_cmd
+      $logger.info "origin_cmd: #{ARGV}"
       parse_cmd
 
       if git_cmds.include?(@git_cmd)
